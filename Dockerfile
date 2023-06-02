@@ -1,5 +1,5 @@
-# Use the official Python base image
-FROM python:3.11.3-slim-bullseye
+# Use a slim version of Python
+FROM python:3.11.3-slim
 
 # Set environment variables
 ENV PIP_DISABLE_PIP_VERSION_CHECK 1
