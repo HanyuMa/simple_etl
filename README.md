@@ -51,10 +51,10 @@ docker-compose down
 ```
 
 6. **Run unit tests**
-Before turning of the Docker services, you can run the unit tests in `simple_etl/tests.py`:
 ```bash
 docker exec -it simple_etl_web_1 python3 manage.py test
 ```
+Before turning off the Docker services, you can run the unit tests in `simple_etl/tests.py`
 
 # Repository Structure
 * Dockerfile: Defines the Docker image configuration for the application.
@@ -71,7 +71,7 @@ docker exec -it simple_etl_web_1 python3 manage.py test
 # Deliverables
 1. Dockerfile
 2. requirement.txt
-3. simple_etl/etl_scripts.py: A Python script that runs the ETL process. simple_etl/views.py and simple_etl/urls.py sets up the API that accepts a POST request.
+3. simple_etl/etl_scripts.py: A Python script that runs the ETL process. simple_etl/views.py and simple_etl/urls.py set up the API that accepts a POST request.
 4. README
 5. build_and_run.sh
 6. run_etl.sh
