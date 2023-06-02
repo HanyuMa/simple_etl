@@ -56,12 +56,21 @@ def etl():
         .reset_index(name="count")
     )
 
+    # Join the compounds_df with compound_counts to get compound names
+    compound_counts = pd.merge(
+        compound_counts,
+        compounds_df[["compound_id", "compound_name"]],
+        left_on="experiment_compound_ids",
+        right_on="compound_id",
+        how="left",
+    )
+
     # Find the most commonly used compound for each user
     mostly_used_compound = (
         compound_counts.groupby("user_id")
         .apply(
             lambda x: ";".join(
-                x[x["count"] == x["count"].max()]["experiment_compound_ids"].astype(str)
+                x[x["count"] == x["count"].max()]["compound_name"].astype(str)
             )
         )
         .reset_index(name="mostly_used_compound")
