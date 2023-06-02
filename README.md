@@ -2,6 +2,11 @@
 
 This repository contains an ETL (Extract, Transform, Load) application built with Python, Django and Docker. The application fetches data from the `data` folder, performs necessary transformations, and loads it into a PostgreSQL database.
 
+## Why Django and how it works for this project
+1. Django ships with built-in support for PostgreSQL and other databases. The actual Django code will be almost identical for different databases. We only need to update `DATABASE` settings in `django_project/settings.py` and install the desired database. Here, I use `psycopg2-binary` for PostgreSQL.
+
+2. Django provides web services and makes it simple to create an API that accepts a POST request.
+
 ## Requirements
 
 - Docker
@@ -45,6 +50,12 @@ This script allows you to query the database to verify that it has been populate
 docker-compose down
 ```
 
+6. **Run unit tests**
+Before turning of the Docker services, you can run the unit tests in `simple_etl/tests.py`:
+```bash
+docker exec -it simple_etl_web_1 python3 manage.py test
+```
+
 # Repository Structure
 * Dockerfile: Defines the Docker image configuration for the application.
 * requirements.txt: Lists all the Python dependencies required for the application.
@@ -60,7 +71,7 @@ docker-compose down
 # Deliverables
 1. Dockerfile
 2. requirement.txt
-3. simple_etl/etl_scripts.py: A Python script that sets up the API and the ETL process.
+3. simple_etl/etl_scripts.py: A Python script that runs the ETL process. simple_etl/views.py and simple_etl/urls.py sets up the API that accepts a POST request.
 4. README
 5. build_and_run.sh
 6. run_etl.sh
