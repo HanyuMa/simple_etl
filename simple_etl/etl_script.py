@@ -1,6 +1,6 @@
 import pandas as pd
 from django.conf import settings
-from simple_etl.models import UserExperimentCompound
+from simple_etl.models import UserExperimentCompound, CompoundCount
 
 
 def etl():
@@ -50,24 +50,41 @@ def etl():
     ].astype(int)
 
     # Calculate the count of each compound used by each user
-    compound_counts = (
+    user_compound_count_df = (
         user_experiments_df.groupby(["user_id", "experiment_compound_ids"])
         .size()
         .reset_index(name="count")
     )
 
-    # Join the compounds_df with compound_counts to get compound names
-    compound_counts = pd.merge(
-        compound_counts,
+    # Join the compounds_df with user_compound_counts to get compound names
+    user_compound_count_df = pd.merge(
+        user_compound_count_df,
         compounds_df[["compound_id", "compound_name"]],
         left_on="experiment_compound_ids",
         right_on="compound_id",
         how="left",
     )
 
+    # Group by "compound_id" and "compound_name" and aggregate the counts
+    compound_count_df = (
+        user_compound_count_df.groupby(["compound_id", "compound_name"])
+        .agg({"count": "sum"})
+        .reset_index()
+    )
+
+    # Convert the `compound_count_df` to the `CompoundCount` model.
+    for index, row in compound_count_df.iterrows():
+        myModel = CompoundCount(
+            compound_id=row["compound_id"],
+            compound_name=row["compound_name"],
+            compound_count=row["count"],
+        )
+        # Upload processed data into a database
+        myModel.save()
+
     # Find the most commonly used compound for each user
     mostly_used_compound = (
-        compound_counts.groupby("user_id")
+        user_compound_count_df.groupby("user_id")
         .apply(
             lambda x: ";".join(
                 x[x["count"] == x["count"].max()]["compound_name"].astype(str)

@@ -10,3 +10,12 @@ class UserExperimentCompound(models.Model):
 
     class Meta:
         db_table = "user_experiment_compound_data"
+
+
+class CompoundCount(models.Model):
+    compound_id = models.IntegerField(primary_key=True)
+    compound_name = models.CharField(max_length=255)
+    compound_count = models.IntegerField()
+
+    class Meta:
+        db_table = "compound_count_data"
