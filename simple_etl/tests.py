@@ -46,10 +46,10 @@ class SimpleEtlTests(TestCase):
         compound_count = CompoundCount.objects.get(compound_id=1)
         self.assertEqual(compound_count.compound_count, 6)
 
-        # Check the number of count for Compound B. The value should be 9.
+        # Check the number of count for Compound B. The value should be 8.
         compound_count = CompoundCount.objects.get(compound_id=2)
-        self.assertEqual(compound_count.compound_count, 9)
-
-        # Check the number of count for Compound C. The value should be 8.
-        compound_count = CompoundCount.objects.get(compound_id=3)
         self.assertEqual(compound_count.compound_count, 8)
+
+        # Check the number of count for Compound C. The value should be 9.
+        compound_count = CompoundCount.objects.get(compound_id=3)
+        self.assertEqual(compound_count.compound_count, 9)
